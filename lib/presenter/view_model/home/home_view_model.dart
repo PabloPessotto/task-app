@@ -13,6 +13,7 @@ class HomeViewModel extends GetxController {
 
   final RxString _username = ''.obs;
   final RxList<Task> _tasks = RxList<Task>();
+  final RxList<Task> _tasksInternal = RxList<Task>();
   final RxString _statusTask = 'todas'.obs;
 
   String get statusTask => _statusTask.value;
@@ -20,12 +21,11 @@ class HomeViewModel extends GetxController {
   String get username => _username.value;
 
   List<Task> get tasks => _tasks;
-  List<Task> _tasksInternal = [];
 
   List<Task> get tasksInternal => _tasksInternal;
 
   RxInt quantityByStatus(String status) =>
-      _tasks.where((p0) => p0.status == status).length.obs;
+      _tasksInternal.where((p0) => p0.status == status).length.obs;
 
   @override
   void onInit() {
@@ -52,7 +52,7 @@ class HomeViewModel extends GetxController {
       case Success(value: final listTask):
         print('tasks loaded - ${listTask.map((e) => e.toJson())}');
 
-        _tasksInternal = listTask;
+        _tasksInternal.value = listTask;
         _tasks.value = listTask;
 
       case Failure(value: final message):
