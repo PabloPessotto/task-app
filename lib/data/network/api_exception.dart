@@ -2,9 +2,14 @@ import 'package:dio/dio.dart';
 
 class APIException extends DioException {
   APIException(
-    DioExceptionType type,
     String message, {
-    required super.requestOptions,
+    DioExceptionType? type,
+    RequestOptions? requestOptions,
     super.response,
-  }) : super(message: message);
+    super.stackTrace,
+    super.error,
+  }) : super(
+          message: message,
+          requestOptions: requestOptions ?? RequestOptions(),
+        );
 }

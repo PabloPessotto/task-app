@@ -1,0 +1,7 @@
+{
+    "message": {
+        "text": "Incorrect password.",
+        "status": 401
+    },
+    "content": null
+}
