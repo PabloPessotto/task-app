@@ -25,6 +25,7 @@ class LoginViewModel extends GetxController {
   String? _password;
 
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   void onInit() {
@@ -51,51 +52,32 @@ class LoginViewModel extends GetxController {
   }
 
   Future<void> login() async {
-    FocusScope.of(Get.context!).unfocus();
-    if ((_username?.isEmpty ?? true) || (_password?.isEmpty ?? true)) {
-      openAlert(
-        const BaseAlert(
-          color: Colors.yellow,
-          title: "Verifique as informações!",
-          message:
-              "Verifique se todos os campos estão preenchidos, e tente novamente.",
-          functions: [
-            HighAlertButton(
-              label: "Verificar",
-              onTap: closeView,
-            ),
-          ],
-        ),
-      );
-      return;
-    } else {
-      _updateLoading();
-      final result = await _loginUseCase.execute(_username!, _password!);
-      switch (result) {
-        case Success(value: final user):
-          _updateLoading();
-          pushUntilView(Routes.home);
-        case Failure(value: final message):
-          _updateLoading();
-          print('error - $message');
-          openAlert(
-            BaseAlert(
-              color: Colors.red,
-              title: "Falha na requisição",
-              message: message == "Incorrect password."
-                  ? "Verifique a senha informada e tente novamente."
-                  : message == "User not found"
-                      ? "Usuário não encontrado."
-                      : "Não foi possível realizar login. Tente novamente mais tarde.",
-              functions: const [
-                HighAlertButton(
-                  label: "Verificar",
-                  onTap: closeView,
-                ),
-              ],
-            ),
-          );
-      }
+    _updateLoading();
+    final result = await _loginUseCase.execute(_username!, _password!);
+    switch (result) {
+      case Success(value: final user):
+        _updateLoading();
+        pushUntilView(Routes.home);
+      case Failure(value: final message):
+        _updateLoading();
+        print('error - $message');
+        openAlert(
+          BaseAlert(
+            color: Colors.red,
+            title: "Falha na requisição",
+            message: message == "Incorrect password."
+                ? "Verifique a senha informada e tente novamente."
+                : message == "User not found"
+                    ? "Usuário não encontrado."
+                    : "Não foi possível realizar login. Tente novamente mais tarde.",
+            functions: const [
+              HighAlertButton(
+                label: "Verificar",
+                onTap: closeView,
+              ),
+            ],
+          ),
+        );
     }
   }
 }

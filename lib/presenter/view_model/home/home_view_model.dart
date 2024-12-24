@@ -3,7 +3,7 @@ import 'package:taskforme/core/result.dart';
 import 'package:taskforme/domain/entities/task.dart';
 import 'package:taskforme/domain/usecase/task/get_all_tasks_usecase.dart';
 import 'package:taskforme/domain/usecase/user/get_username_usecase.dart';
-import 'package:taskforme/shared/components/status/status_name.dart';
+import 'package:taskforme/shared/constants/task_status.dart';
 
 class HomeViewModel extends GetxController {
   final GetAllTasksUseCase _getAllTasksUseCase;
@@ -36,13 +36,11 @@ class HomeViewModel extends GetxController {
 
   void filerTasks(String statusFilter) {
     _statusTask.value = statusFilter;
-    if (statusFilter == 'todas') {
-      _tasks.value = _tasksInternal;
-    } else {
-      _tasks.value = _tasksInternal
-          .where((task) => task.status == status(statusFilter))
-          .toList();
-    }
+
+    _tasks.value = _tasksInternal
+        .where((task) =>
+            task.status == TaskStatus.doing || task.status == TaskStatus.inProgress)
+        .toList();
   }
 
   void loadListOfTasks() async {
@@ -53,7 +51,7 @@ class HomeViewModel extends GetxController {
         print('tasks loaded - ${listTask.map((e) => e.toJson())}');
 
         _tasksInternal.value = listTask;
-        _tasks.value = listTask;
+        filerTasks(statusTask);
 
       case Failure(value: final message):
         print('message - $message');

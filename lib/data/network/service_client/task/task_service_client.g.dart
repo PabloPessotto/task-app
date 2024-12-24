@@ -19,11 +19,10 @@ class _TaskServiceClient implements TaskServiceClient {
   String? baseUrl;
 
   @override
-  Future<ContentListTaskDto> getAllTasks(String token) async {
+  Future<ContentListTaskDto> getAllTasks() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ContentListTaskDto>(Options(
@@ -47,14 +46,10 @@ class _TaskServiceClient implements TaskServiceClient {
   }
 
   @override
-  Future<ContentTaskDto> registerTask(
-    String token,
-    TaskDto task,
-  ) async {
+  Future<ContentTaskDto> registerTask(TaskRequest task) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(task.toJson());
     final _result = await _dio
@@ -80,14 +75,12 @@ class _TaskServiceClient implements TaskServiceClient {
 
   @override
   Future<ContentTaskDto> updateTask(
-    String token,
-    TaskDto task,
+    TaskRequest task,
     int id,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(task.toJson());
     final _result = await _dio
@@ -113,14 +106,12 @@ class _TaskServiceClient implements TaskServiceClient {
 
   @override
   Future<ContentTaskDto> updateTaskStatus(
-    String token,
     String status,
     int id,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = {'status': status};
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ContentTaskDto>(Options(
@@ -144,14 +135,10 @@ class _TaskServiceClient implements TaskServiceClient {
   }
 
   @override
-  Future<ContentTaskDto> deleteTask(
-    String token,
-    int id,
-  ) async {
+  Future<ContentTaskDto> deleteTask(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ContentTaskDto>(Options(
@@ -175,14 +162,10 @@ class _TaskServiceClient implements TaskServiceClient {
   }
 
   @override
-  Future<ContentTaskDto> getTaskById(
-    String token,
-    int id,
-  ) async {
+  Future<ContentTaskDto> getTaskById(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Authorization': token};
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ContentTaskDto>(Options(

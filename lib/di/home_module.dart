@@ -12,6 +12,7 @@ class HomeModule implements Bindings {
       () => GetAllTasksUseCase(
         Get.find<TaskRepository>(),
       ),
+      tag: 'allTasks',
     );
 
     Get.lazyPut<GetUsernameUseCase>(
@@ -22,7 +23,7 @@ class HomeModule implements Bindings {
 
     Get.lazyPut<HomeViewModel>(
       () => HomeViewModel(
-        Get.find<GetAllTasksUseCase>(),
+        Get.find<GetAllTasksUseCase>(tag: 'allTasks'),
         Get.find<GetUsernameUseCase>(),
       ),
     );

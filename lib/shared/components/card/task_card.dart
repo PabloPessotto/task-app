@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskforme/shared/components/blur/blur_container.dart';
 import 'package:taskforme/shared/functions/screen_size/sizes.dart';
 
 class TaskCard extends StatelessWidget {
@@ -11,50 +12,51 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = screenHeight(context);
-    return Card(
-      color: color?.withOpacity(.84),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color,
-              ),
-              padding: const EdgeInsets.all(3.5),
-              margin: const EdgeInsets.only(right: 6),
-              child: Icon(
-                iconData,
-                color: Colors.white,
-              ),
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "$state",
-                    style: TextStyle(
-                      fontSize: height / 47,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+    return BlurContainer(
+      height: 90,
+      width: 150,
+      color: Colors.white38,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "$quantity",
+                  style: TextStyle(
+                    fontSize: height / 31,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
                   ),
-                  Text(
-                    "$quantity tarefas",
-                    style: TextStyle(
-                      fontSize: height / 46,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
-                    ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
                   ),
-                ],
-              ),
+                  padding: const EdgeInsets.all(2),
+                  child: Icon(
+                    iconData,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Text(
+            "$state",
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              fontSize: height / 50,
+              color: Colors.black45,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -17,4 +17,14 @@ class ContentUserDto {
       _$ContentUserDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ContentUserDtoToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ContentUserDto &&
+          runtimeType == other.runtimeType &&
+          content == other.content;
+
+  @override
+  int get hashCode => content.hashCode;
 }

@@ -12,7 +12,7 @@ double screenHeight(BuildContext context) {
 double screenWidth(BuildContext context) {
   final mediaQuery = MediaQuery.of(context);
   final height = switch (mediaQuery.orientation) {
-    Orientation.portrait => mediaQuery.size.width,
+    Orientation.portrait => mediaQuery.size.height,
     Orientation.landscape => mediaQuery.size.width
   };
   return height;

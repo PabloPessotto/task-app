@@ -1,3 +1,5 @@
+import 'package:taskforme/domain/entities/label.dart';
+
 class Task {
   int? id;
   int? userId;
@@ -5,7 +7,7 @@ class Task {
   String? description;
   String? status;
   String? date;
-  List<String>? label;
+  List<Label>? labels;
 
   Task(
       {this.id,
@@ -14,7 +16,7 @@ class Task {
       this.description,
       this.status,
       this.date,
-      this.label});
+      this.labels});
 
   Map<String, dynamic> toJson() {
     return {
@@ -24,7 +26,7 @@ class Task {
       "description": description,
       "status": status,
       "date": date,
-      "label": label,
+      "labels": labels,
     };
   }
 
@@ -36,7 +38,7 @@ class Task {
       description: json["description"],
       status: json["status"],
       date: json["date"],
-      label: json["label"],
+      labels: json["labels"],
     );
   }
 }

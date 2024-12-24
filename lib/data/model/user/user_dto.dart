@@ -16,4 +16,12 @@ class UserDto {
   factory UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserDtoToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserDto && runtimeType == other.runtimeType && userId == other.userId;
+
+  @override
+  int get hashCode => userId.hashCode;
 }

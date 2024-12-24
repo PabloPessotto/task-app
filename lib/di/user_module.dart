@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskforme/data/datasource/local/user/user_local_data_source.dart';
@@ -9,6 +10,8 @@ import 'package:taskforme/domain/repository/user_repository.dart';
 class UserModule implements Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<UserServiceClient>(() => UserServiceClient(Get.find<Dio>()));
+
     Get.lazyPut<UserLocalDataSource>(
       () => UserLocalDataSourceImpl(
         Get.find<SharedPreferences>(),

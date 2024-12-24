@@ -7,6 +7,5 @@ class CreateTaskUseCase {
 
   CreateTaskUseCase(this._taskRepository);
 
-  Future<Result<Task, String>> execute(Task task) =>
-      _taskRepository.registerTask(task);
+  Future<Result<Task, String>> call(Task task) => _taskRepository.registerTask(task);
 }

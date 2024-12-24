@@ -18,9 +18,8 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<Result<String, String>> deleteTask(int id) async {
-    final token = _userLocalDataSource.getToken();
     try {
-      final response = await _taskRemoteDataSource.deleteTask(token, id);
+      final response = await _taskRemoteDataSource.deleteTask(id);
       return Success("${response.message}");
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);
@@ -31,24 +30,22 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<Result<List<Task>, String>> getAllTasks() async {
     final userId = _userLocalDataSource.getUserId();
-    final token = _userLocalDataSource.getToken();
     try {
-      final response = await _taskRemoteDataSource.getAllTasks(token);
+      final response = await _taskRemoteDataSource.getAllTasks();
       final tasks =
           response.content?.where((task) => task.userId == userId).toList();
 
       return Success(tasks?.map((e) => e.toDomain()).toList() ?? <Task>[]);
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);
-      return Failure(text['text']);
+      return Failure("");
     }
   }
 
   @override
   Future<Result<Task, String>> getTaskById(int id) async {
     try {
-      final token = _userLocalDataSource.getToken();
-      final response = await _taskRemoteDataSource.getTaskById(token, id);
+      final response = await _taskRemoteDataSource.getTaskById(id);
       return Success(response.content.toDomain());
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);
@@ -59,11 +56,10 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<Result<Task, String>> registerTask(Task task) async {
     final userId = _userLocalDataSource.getUserId();
-    final token = _userLocalDataSource.getToken();
     try {
       task.userId = userId;
-      task.status = TaskStatus.opened;
-      final response = await _taskRemoteDataSource.registerTask(token, task.toDto());
+      task.status = TaskStatus.pending;
+      final response = await _taskRemoteDataSource.registerTask(task.toRequest());
 
       return Success(response.content.toDomain());
     } on APIException catch (e) {
@@ -75,10 +71,10 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<Result<Task, String>> updateTask(Task task) async {
     final userId = _userLocalDataSource.getUserId();
-    final token = _userLocalDataSource.getToken();
     try {
       task.userId = userId;
-      final response = await _taskRemoteDataSource.updateTask(token, task.toDto());
+      final response =
+          await _taskRemoteDataSource.updateTask(task.toRequest(), task.id!);
       return Success(response.content.toDomain());
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);
@@ -88,10 +84,8 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<Result<Task, String>> updateTaskStatus(String status, int id) async {
-    final token = _userLocalDataSource.getToken();
     try {
-      final response =
-          await _taskRemoteDataSource.updateTaskStatus(token, status, id);
+      final response = await _taskRemoteDataSource.updateTaskStatus(status, id);
       return Success(response.content.toDomain());
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);

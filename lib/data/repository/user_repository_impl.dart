@@ -20,10 +20,11 @@ class UserRepositoryImpl implements UserRepository {
       final response = await _remoteDataSource.login(username, password);
       final user = response.content;
 
-      await _localDataSource.setToken(user!.token!);
-      await _localDataSource.setUserId(user.userId!);
-      await _localDataSource.setUserName(user.name!);
-
+      if (user != null) {
+        await _localDataSource.setToken(user.token!);
+        await _localDataSource.setUserId(user.userId!);
+        await _localDataSource.setUserName(user.name!);
+      }
       return Success(user.toDomain());
     } on APIException catch (e) {
       final text = jsonDecode(e.message!);
@@ -32,7 +33,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<User, String>> register(String username, String password) async {
+  Future<Result<User, String>> register(
+      String username, String password) async {
     try {
       final response = await _remoteDataSource.register(username, password);
       return Success(response.content.toDomain());

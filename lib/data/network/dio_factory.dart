@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:taskforme/data/network/error_interceptor.dart';
+import 'package:taskforme/data/network/dio_interceptor.dart';
 import 'package:taskforme/shared/utils/config_reader.dart';
 
 const String applicationJson = 'application/json';
@@ -28,7 +28,7 @@ class DioFactory {
       receiveTimeout: Duration(minutes: timeout),
     );
 
-    dio.interceptors.add(ErrorInterceptor());
+    dio.interceptors.add(DioInterceptor());
 
     if (!kReleaseMode) {
       dio.interceptors.add(

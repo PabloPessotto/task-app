@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskforme/shared/components/blur/blur_background.dart';
+import 'package:taskforme/shared/components/circle/background_circle.dart';
 import 'package:taskforme/shared/functions/navigator/navigator.dart';
 import 'package:taskforme/shared/functions/screen_size/sizes.dart';
+import 'package:taskforme/shared/resources/assets/app_assets.dart';
 import 'package:taskforme/shared/resources/routes/routes.dart';
 
 class InitialView extends StatefulWidget {
@@ -39,40 +42,49 @@ class _InitialViewState extends State<InitialView> {
   @override
   Widget build(BuildContext context) {
     final height = screenHeight(context);
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.white,
-              Colors.white,
-              Colors.white,
-              Colors.white,
-              Colors.blue[50]!,
-              Colors.blue[100]!,
-              Colors.blue[100]!,
-              Colors.blue[300]!,
-              Colors.blue[400]!,
-            ],
-            begin: Alignment.bottomRight,
-            end: Alignment.topLeft,
-          ),
+    return BlurBackground(
+      blur: 300,
+      circles: [
+        const BackgroundCircle(
+          right: -70,
+          colors: [
+            Colors.tealAccent,
+            Colors.purple,
+          ],
         ),
-        child: Center(
-          child: ShaderMask(
-            blendMode: BlendMode.srcIn,
-            shaderCallback: (Rect bounds) => LinearGradient(
-              colors: [
-                Colors.blue[600]!,
-                Colors.blue[800]!,
-                Colors.blue[900]!,
-              ],
-            ).createShader(bounds),
-            child: Icon(
-              Icons.check_box_rounded,
-              size: height / 5,
-            ),
+        BackgroundCircle(
+          left: -50,
+          top: -60,
+          size: 150,
+          colors: [
+            Colors.orangeAccent,
+            Colors.red[900]!,
+          ],
+        ),
+        BackgroundCircle(
+          left: -70,
+          top: 210,
+          size: 200,
+          colors: [
+            Colors.green[900]!,
+            Colors.limeAccent,
+          ],
+        ),
+        BackgroundCircle(
+          bottom: -100,
+          left: -30,
+          colors: [
+            Colors.purple,
+            Colors.blue[600]!,
+          ],
+        ),
+      ],
+      scaffold: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Image.asset(
+            Assets.logo,
+            height: height / 7.5,
           ),
         ),
       ),

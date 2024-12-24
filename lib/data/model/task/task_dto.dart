@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:taskforme/data/model/label/label_dto.dart';
 
 part 'task_dto.g.dart';
 
@@ -16,8 +17,8 @@ class TaskDto {
   String? status;
   @JsonKey(name: 'date')
   String? date;
-  @JsonKey(name: 'label')
-  dynamic label;
+  @JsonKey(name: 'labels')
+  List<LabelDto>? labels;
 
   TaskDto(
       {this.id,
@@ -26,7 +27,7 @@ class TaskDto {
       this.description,
       this.status,
       this.date,
-      this.label});
+      this.labels});
 
   factory TaskDto.fromJson(Map<String, dynamic> json) => _$TaskDtoFromJson(json);
 

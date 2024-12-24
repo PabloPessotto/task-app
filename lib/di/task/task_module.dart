@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:taskforme/data/datasource/local/user/user_local_data_source.dart';
 import 'package:taskforme/data/datasource/remote/task/task_remote_data_source.dart';
@@ -8,6 +9,8 @@ import 'package:taskforme/domain/repository/task_repository.dart';
 class TaskModule implements Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<TaskServiceClient>(() => TaskServiceClient(Get.find<Dio>()));
+
     Get.lazyPut<TaskRemoteDataSource>(
       () => TaskRemoteDataSourceImpl(
         Get.find<TaskServiceClient>(),

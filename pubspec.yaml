@@ -45,6 +45,10 @@ dependencies:
   flutter_svg: ^2.0.10+1
   jwt_decoder: ^2.0.1
   intl: ^0.19.0
+  flutter_localizations:
+    sdk: flutter
+  flutter_staggered_grid_view: ^0.7.0
+
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +62,10 @@ dev_dependencies:
   flutter_lints: ^3.0.2
   build_runner: ^2.4.8
   retrofit_generator: ^8.1.0
+  test: ^1.24.9
+  mockito: ^5.4.4
+  http_mock_adapter: ^0.6.1
+  getx_test: ^1.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

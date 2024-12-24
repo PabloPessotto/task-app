@@ -37,9 +37,10 @@ class SearchTask extends SearchDelegate<String> {
     final result = tasks.where((task) {
       final title = task.title ?? '';
       final description = task.description ?? '';
-      final label =
-          task.label?.map((e) => e.toLowerCase()).contains(query.toLowerCase()) ??
-              false;
+      final label = task.labels
+              ?.map((e) => e.name?.toLowerCase())
+              .contains(query.toLowerCase()) ??
+          false;
       return title.toLowerCase().contains(query.toLowerCase()) ||
           label ||
           description.toLowerCase().contains(query.toLowerCase());
@@ -96,9 +97,9 @@ class SearchTask extends SearchDelegate<String> {
                   ),
                 ),
                 subtitle: Wrap(
-                  children: e.label!.map((e) {
+                  children: e.labels!.map((e) {
                     return Text(
-                      '#${e.toLowerCase()} ',
+                      '#${e.name?.toLowerCase()} ',
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
                       ),
@@ -109,7 +110,6 @@ class SearchTask extends SearchDelegate<String> {
             ],
           ),
         );
-        ;
       }).toList(),
     );
   }
@@ -120,9 +120,10 @@ class SearchTask extends SearchDelegate<String> {
       final result = tasks.where((task) {
         final title = task.title ?? '';
         final description = task.description ?? '';
-        final label =
-            task.label?.map((e) => e.toLowerCase()).contains(query.toLowerCase()) ??
-                false;
+        final label = task.labels
+                ?.map((e) => e.name?.toLowerCase())
+                .contains(query.toLowerCase()) ??
+            false;
         return title.toLowerCase().contains(query.toLowerCase()) ||
             label ||
             description.toLowerCase().contains(query.toLowerCase());
@@ -179,9 +180,9 @@ class SearchTask extends SearchDelegate<String> {
                     ),
                   ),
                   subtitle: Wrap(
-                    children: e.label!.map((e) {
+                    children: e.labels!.map((e) {
                       return Text(
-                        '#${e.toLowerCase()} ',
+                        '#${e.name?.toLowerCase()} ',
                         style: const TextStyle(
                           fontWeight: FontWeight.w300,
                         ),
@@ -192,11 +193,19 @@ class SearchTask extends SearchDelegate<String> {
               ],
             ),
           );
-          ;
         }).toList(),
       );
     } else {
       return Container();
     }
+  }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+      inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
+            contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+          ),
+    );
   }
 }

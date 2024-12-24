@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskforme/core/result.dart';
+import 'package:taskforme/domain/entities/label.dart';
 import 'package:taskforme/domain/entities/task.dart';
+import 'package:taskforme/domain/usecase/label/get_list_label_usecase.dart';
 import 'package:taskforme/domain/usecase/task/create_task_usecase.dart';
 import 'package:taskforme/domain/usecase/task/edit_task_usecase.dart';
 import 'package:taskforme/shared/components/base/alert/base_alert.dart';
 import 'package:taskforme/shared/components/button/alert_buttons/high_alert_button.dart';
 import 'package:taskforme/shared/components/button/alert_buttons/low_alert_button.dart';
+import 'package:taskforme/shared/constants/task_status.dart';
 import 'package:taskforme/shared/functions/date/current_date.dart';
 import 'package:taskforme/shared/functions/date/date_formatter.dart';
 import 'package:taskforme/shared/functions/dialog/dialog_functions.dart';
+import 'package:taskforme/shared/functions/log/console_log.dart';
 import 'package:taskforme/shared/functions/navigator/navigator.dart';
 
 class RegisterTaskViewModel extends GetxController {
   final CreateTaskUseCase _createTaskUseCase;
   final EditTaskUseCase _editTaskUseCase;
+  final GetListLabelUseCase _listLabelUseCase;
 
-  RegisterTaskViewModel(this._createTaskUseCase, this._editTaskUseCase);
+  RegisterTaskViewModel(
+      this._createTaskUseCase, this._editTaskUseCase, this._listLabelUseCase);
 
   final RxList<String> _taskLabel = <String>[].obs;
+  final RxList<Label> _listLabel = <Label>[].obs;
+  final RxList<Label> _listLabelSelected = <Label>[].obs;
   final RxBool _loading = false.obs;
   final RxString _date = getCurrentDate().obs;
 
   List<String> get taskLabel => _taskLabel;
+
+  RxList<Label> get listLabel => _listLabel;
+  RxList<Label> get listLabelSelected => _listLabelSelected;
 
   bool get loading => _loading.value;
 
@@ -40,11 +51,25 @@ class RegisterTaskViewModel extends GetxController {
     super.onInit();
   }
 
-  void addLabel(String label) {
-    if (!_taskLabel.contains(label)) {
-      _taskLabel.add(label);
+  @override
+  void onReady() {
+    loadLabels();
+    super.onReady();
+  }
+
+  void loadLabels() async {
+    final result = await _listLabelUseCase.call();
+    if (result case Success(value: final labels)) {
+      _listLabel.value = labels;
+      log('List Labels - ${labels.map((e) => e.toJson())}');
+    }
+  }
+
+  void addLabel(Label label) {
+    if (!_listLabelSelected.contains(label)) {
+      _listLabelSelected.add(label);
     } else {
-      _taskLabel.remove(label);
+      _listLabelSelected.remove(label);
     }
   }
 
@@ -92,13 +117,15 @@ class RegisterTaskViewModel extends GetxController {
       );
     } else {
       _updateLoading();
+      final String? status = Get.parameters["status"];
       final task = Task(
         title: _title,
         description: _description ?? 'Sem descrição',
         date: date,
-        label: taskLabel,
+        status: status ?? TaskStatus.opened,
+        labels: listLabelSelected,
       );
-      final result = await _createTaskUseCase.execute(task);
+      final result = await _createTaskUseCase.call(task);
       switch (result) {
         case Success(value: final taskCreated):
           print('Task created successfully - ${taskCreated.toJson()}');
@@ -160,7 +187,7 @@ class RegisterTaskViewModel extends GetxController {
       _description = task.description;
       titleController.text = task.title ?? '';
       descriptionController.text = task.description ?? '';
-      _taskLabel.value = task.label ?? <String>[];
+      // _taskLabel.value = task.label ?? <String>[];
       _date.value = task.date ?? getCurrentDate();
     }
   }
@@ -190,7 +217,7 @@ class RegisterTaskViewModel extends GetxController {
         title: _title,
         description: _description ?? 'Sem descrição',
         date: date,
-        label: taskLabel,
+        // label: taskLabel,
       );
       final result = await _editTaskUseCase.execute(task);
       switch (result) {

@@ -2,8 +2,10 @@ import 'package:taskforme/shared/constants/task_status.dart';
 
 String statusName(String status) => switch (status) {
       TaskStatus.opened => 'aberta',
+      TaskStatus.pending => 'pendente',
       TaskStatus.doing => 'fazendo',
-      TaskStatus.completed => 'completa',
+      TaskStatus.inProgress => 'em andamento',
+      TaskStatus.completed => 'concluída',
       TaskStatus.canceled => 'cancelada',
       'todas' => 'todas',
       _ => ''
@@ -11,8 +13,10 @@ String statusName(String status) => switch (status) {
 
 String status(String name) => switch (name) {
       'aberta' => TaskStatus.opened,
+      'pendente' => TaskStatus.pending,
+      'em andamento' => TaskStatus.inProgress,
       'fazendo' => TaskStatus.doing,
-      'completa' => TaskStatus.completed,
+      'concluída' => TaskStatus.completed,
       'cancelada' => TaskStatus.canceled,
       'todas' => 'todas',
       _ => ''

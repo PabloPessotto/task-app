@@ -20,4 +20,19 @@ class User {
       token: json["token"],
     );
   }
+
+  @override
+  String toString() {
+    return 'User{userId: $userId, name: $name, token: $token}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User &&
+          runtimeType == other.runtimeType &&
+          userId == other.userId;
+
+  @override
+  int get hashCode => userId.hashCode;
 }

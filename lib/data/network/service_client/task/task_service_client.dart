@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:taskforme/data/model/request/task/task_request.dart';
 import 'package:taskforme/data/model/task/content/content_task_dto.dart';
-import 'package:taskforme/data/model/task/task_dto.dart';
 
 part 'task_service_client.g.dart';
 
@@ -11,25 +11,21 @@ abstract interface class TaskServiceClient {
   factory TaskServiceClient(Dio dio, {String? baseUrl}) = _TaskServiceClient;
 
   @GET('/tasks')
-  Future<ContentListTaskDto> getAllTasks(@Header('Authorization') String token);
+  Future<ContentListTaskDto> getAllTasks();
 
   @POST('/tasks')
-  Future<ContentTaskDto> registerTask(
-      @Header('Authorization') String token, @Body() TaskDto task);
+  Future<ContentTaskDto> registerTask(@Body() TaskRequest task);
 
   @PUT('/tasks/{id}')
-  Future<ContentTaskDto> updateTask(@Header('Authorization') String token,
-      @Body() TaskDto task, @Path('id') int id);
+  Future<ContentTaskDto> updateTask(@Body() TaskRequest task, @Path('id') int id);
 
   @PUT('/tasks/{id}/status')
-  Future<ContentTaskDto> updateTaskStatus(@Header('Authorization') String token,
+  Future<ContentTaskDto> updateTaskStatus(
       @Field('status') String status, @Path('id') int id);
 
   @DELETE('/tasks/{id}')
-  Future<ContentTaskDto> deleteTask(
-      @Header('Authorization') String token, @Path('id') int id);
+  Future<ContentTaskDto> deleteTask(@Path('id') int id);
 
   @GET('/tasks/{id}')
-  Future<ContentTaskDto> getTaskById(
-      @Header('Authorization') String token, @Path('id') int id);
+  Future<ContentTaskDto> getTaskById(@Path('id') int id);
 }

@@ -1,19 +1,19 @@
+import 'package:taskforme/data/model/request/task/task_request.dart';
 import 'package:taskforme/data/model/task/content/content_task_dto.dart';
-import 'package:taskforme/data/model/task/task_dto.dart';
 import 'package:taskforme/data/network/service_client/task/task_service_client.dart';
 
 abstract interface class TaskRemoteDataSource {
-  Future<ContentListTaskDto> getAllTasks(String token);
+  Future<ContentListTaskDto> getAllTasks();
 
-  Future<ContentTaskDto> registerTask(String token, TaskDto task);
+  Future<ContentTaskDto> registerTask(TaskRequest task);
 
-  Future<ContentTaskDto> updateTask(String token, TaskDto task);
+  Future<ContentTaskDto> updateTask(TaskRequest task, int id);
 
-  Future<ContentTaskDto> deleteTask(String token, int id);
+  Future<ContentTaskDto> deleteTask(int id);
 
-  Future<ContentTaskDto> getTaskById(String token, int id);
+  Future<ContentTaskDto> getTaskById(int id);
 
-  Future<ContentTaskDto> updateTaskStatus(String token, String status, int id);
+  Future<ContentTaskDto> updateTaskStatus(String status, int id);
 }
 
 class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
@@ -22,33 +22,32 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
   TaskRemoteDataSourceImpl(this._taskServiceClient);
 
   @override
-  Future<ContentTaskDto> deleteTask(String token, int id) async {
-    return await _taskServiceClient.deleteTask('Bearer $token', id);
+  Future<ContentTaskDto> deleteTask(int id) async {
+    return await _taskServiceClient.deleteTask(id);
   }
 
   @override
-  Future<ContentListTaskDto> getAllTasks(String token) async {
-    return await _taskServiceClient.getAllTasks('Bearer $token');
+  Future<ContentListTaskDto> getAllTasks() async {
+    return await _taskServiceClient.getAllTasks();
   }
 
   @override
-  Future<ContentTaskDto> getTaskById(String token, int id) async {
-    return await _taskServiceClient.getTaskById('Bearer $token', id);
+  Future<ContentTaskDto> getTaskById(int id) async {
+    return await _taskServiceClient.getTaskById(id);
   }
 
   @override
-  Future<ContentTaskDto> registerTask(String token, TaskDto task) async {
-    return await _taskServiceClient.registerTask('Bearer $token', task);
+  Future<ContentTaskDto> registerTask(TaskRequest task) async {
+    return await _taskServiceClient.registerTask(task);
   }
 
   @override
-  Future<ContentTaskDto> updateTask(String token, TaskDto task) async {
-    return await _taskServiceClient.updateTask('Bearer $token', task, task.id!);
+  Future<ContentTaskDto> updateTask(TaskRequest task, int id) async {
+    return await _taskServiceClient.updateTask(task, id);
   }
 
   @override
-  Future<ContentTaskDto> updateTaskStatus(
-      String token, String status, int id) async {
-    return await _taskServiceClient.updateTaskStatus('Bearer $token', status, id);
+  Future<ContentTaskDto> updateTaskStatus(String status, int id) async {
+    return await _taskServiceClient.updateTaskStatus(status, id);
   }
 }

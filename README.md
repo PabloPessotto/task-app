@@ -27,6 +27,6 @@ $ flutter pub get
 #### Executar App
 
 ```bash
-$ flutter run lib/main.dart 
+$ flutter run lib/main_common.dart 
 ```
 
